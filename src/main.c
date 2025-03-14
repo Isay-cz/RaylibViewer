@@ -116,19 +116,24 @@ int main(void)
         {
             camera.position = Vector3Add(camera.position, Vector3Scale(camDirectionRight, camSpeed * GetFrameTime()));
         }
-        if (IsKeyDown(KEY_Q))
+        if (IsKeyDown(KEY_SPACE))
         {
             camera.position.y += camSpeed * GetFrameTime();
         }
-        if (IsKeyDown(KEY_E))
+        if (IsKeyDown(KEY_LEFT_SHIFT))
         {
             camera.position.y += -camSpeed * GetFrameTime();
         }
 
         Vector2 mousedelta = GetMouseDelta();
-        Matrix Mrot = MatrixRotateXYZ((Vector3) { mousedelta.y * -0.005f, mousedelta.x * -0.005f, 0 });
-        camDirection = Vector3Transform(camDirection, Mrot);
+        //Matrix Mrot = MatrixRotateXYZ((Vector3) { mousedelta.y * -0.005f, mousedelta.x * -0.005f, 0 });
+        //camDirection = Vector3Transform(camDirection, Mrot);
+        float pitch = -mousedelta.y * 0.1 * GetFrameTime();
+        camDirection = Vector3RotateByAxisAngle(camDirection, camDirectionRight, pitch);
+        float yaw = -mousedelta.x * 0.1 * GetFrameTime();
+        camDirection = Vector3RotateByAxisAngle(camDirection, camera.up, yaw);
         camera.target = Vector3Add(camera.position, camDirection);
+
 
         // Rotación del modelo
         if (IsKeyDown(KEY_Z))
